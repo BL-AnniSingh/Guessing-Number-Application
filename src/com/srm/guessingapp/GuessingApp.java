@@ -1,5 +1,8 @@
 package com.srm.guessingapp;
 
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.Random;
 import java.util.Scanner;
 
@@ -64,4 +67,18 @@ public class GuessingApp {
                 System.out.println("Hint: Number is ODD");
             }
         }
-}
+    }
+    private void saveResult(boolean isWon) {
+        try {
+            BufferedWriter writer = new BufferedWriter(new FileWriter("GameResult.txt", true));
+            writer.write("Result: " + (isWon ? "WIN" : "LOSS") + ", Attempts: " + attempts);
+            writer.newLine();
+            writer.close();
+        } catch (IOException e) {
+            System.out.println("Error saving game result.");
+        }
+    }
+
+
+    }
+
