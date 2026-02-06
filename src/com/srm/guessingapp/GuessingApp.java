@@ -11,7 +11,7 @@ public class GuessingApp {
     private int attempts;
     private int hintCount;
 
-    Scanner scanner = new Scanner(System.in);
+    Scanner sc = new Scanner(System.in);
 
     // Constructor
     public GuessingApp() {
@@ -19,5 +19,39 @@ public class GuessingApp {
         targetNumber = random.nextInt(100) + 1; // 1 to 100
         attempts = 0;
         hintCount = 0;
+    }
+
+    public void startGame() {
+        System.out.println("🎮 Welcome to Number Guessing Game!");
+        System.out.println("Guess a number between 1 and 100");
+        System.out.println("You have " + MAX_ATTEMPTS + " attempts\n");
+
+        boolean isWon = false;
+
+        while (attempts < MAX_ATTEMPTS) {
+            System.out.print("Enter your guess: ");
+
+            try {
+                int guess = sc.nextInt();
+                attempts++;
+
+                if (guess == targetNumber) {
+                    System.out.println("Correct! You won in " + attempts + " attempts.");
+                    isWon = true;
+                    break;
+                } else if (guess > targetNumber) {
+                    System.out.println("Too High!");
+                } else {
+                    System.out.println("Too Low!");
+                }
+
+                generateHint();
+
+            } catch (Exception e) {
+                System.out.println(" Invalid input! Enter numbers only.");
+                sc.next(); // clear input
+            }
+        }
+
     }
 }
