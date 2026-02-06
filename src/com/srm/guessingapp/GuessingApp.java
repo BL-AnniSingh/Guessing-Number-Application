@@ -7,6 +7,7 @@ import java.util.Random;
 import java.util.Scanner;
 
 public class GuessingApp {
+
     private static final int MAX_ATTEMPTS = 5;
     private static final int MAX_HINTS = 2;
 
@@ -25,7 +26,7 @@ public class GuessingApp {
     }
 
     public void startGame() {
-        System.out.println("🎮 Welcome to Number Guessing Game!");
+        System.out.println("Welcome to Number Guessing Game!");
         System.out.println("Guess a number between 1 and 100");
         System.out.println("You have " + MAX_ATTEMPTS + " attempts\n");
 
@@ -52,11 +53,18 @@ public class GuessingApp {
 
             } catch (Exception e) {
                 System.out.println(" Invalid input! Enter numbers only.");
-                sc.next(); // clear input
+                sc.next(); // clear invalid input
             }
         }
 
+        if (!isWon) {
+            System.out.println("Game Over! Number was: " + targetNumber);
+        }
+
+        saveResult(isWon);
+        restartGame();
     }
+
     private void generateHint() {
         if (hintCount < MAX_HINTS) {
             hintCount++;
@@ -68,17 +76,31 @@ public class GuessingApp {
             }
         }
     }
+
     private void saveResult(boolean isWon) {
-        try {
-            BufferedWriter writer = new BufferedWriter(new FileWriter("GameResult.txt", true));
-            writer.write("Result: " + (isWon ? "WIN" : "LOSS") + ", Attempts: " + attempts);
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter("GameResult.txt", true))) {
+            writer.write("Result: " + (isWon ? "WIN" : "LOSS") +
+                    ", Attempts: " + attempts);
             writer.newLine();
-            writer.close();
         } catch (IOException e) {
-            System.out.println("Error saving game result.");
+            System.out.println(" Error saving game result.");
         }
     }
 
+    private void restartGame() {
+        System.out.print("\nDo you want to play again? (yes/no): ");
+        String choice = sc.next();
 
+        if (choice.equalsIgnoreCase("yes")) {
+            new GuessingApp().startGame();
+        } else {
+            System.out.println(" Thanks for playing!");
+            sc.close();
+        }
     }
 
+    public static void main(String[] args) {
+        GuessingApp game = new GuessingApp();
+        game.startGame();
+    }
+}
