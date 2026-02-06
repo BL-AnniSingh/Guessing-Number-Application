@@ -54,4 +54,14 @@ public class GuessingApp {
         }
 
     }
+    private void generateHint() {
+        if (hintCount < MAX_HINTS) {
+            hintCount++;
+
+            if (targetNumber % 2 == 0) {
+                System.out.println("Hint: Number is EVEN");
+            } else {
+                System.out.println("Hint: Number is ODD");
+            }
+        }
 }
